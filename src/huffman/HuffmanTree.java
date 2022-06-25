@@ -46,6 +46,7 @@ public class HuffmanTree {
         novoNo.left = left;
         novoNo.right = right;
 
+        root = novoNo;
     }
 
     public void printFrequncia() {
