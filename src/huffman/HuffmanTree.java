@@ -1,11 +1,12 @@
 package huffman;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
 public class HuffmanTree {
     private HashMap<Character,Integer> frequecia = new HashMap<Character, Integer>();
-    private PriorityQueue<HuffmanNode> valores;
+    private ArrayList<HuffmanNode> valores = new ArrayList<HuffmanNode>();
     public HuffmanNode root = null;
 
     public HuffmanTree(int frequecia[])
@@ -36,17 +37,18 @@ public class HuffmanTree {
 
         HuffmanNode novoNo = new HuffmanNode();
 
-        HuffmanNode left = valores.peek();
-        valores.poll();
+        HuffmanNode left = valores.get(0);
+        valores.remove(0);
 
-        HuffmanNode right = valores.peek();
-        valores.poll();
+        HuffmanNode right = valores.get(0);
+        valores.remove(0);
 
         novoNo.valor = left.valor + right.valor;
         novoNo.left = left;
         novoNo.right = right;
 
         root = novoNo;
+
     }
 
     public void printFrequncia() {
