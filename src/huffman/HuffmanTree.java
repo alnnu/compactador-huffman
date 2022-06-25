@@ -1,12 +1,14 @@
 package huffman;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+
 public class HuffmanTree {
     private HashMap<Character,Integer> frequecia = new HashMap<Character, Integer>();
-    private ArrayList<HuffmanNode> valores = new ArrayList<HuffmanNode>();
+    private PriorityQueue<HuffmanNode> valores;
     public HuffmanNode root = null;
 
     public HuffmanTree(int frequecia[])
@@ -17,18 +19,25 @@ public class HuffmanTree {
                 this.frequecia.put((char)i,frequecia[i]);
             }
         }
+        int size = this.frequecia.size();
+        valores = new PriorityQueue<HuffmanNode>(size, new Comparator<HuffmanNode>() {
+            @Override
+            public int compare(HuffmanNode x, HuffmanNode y) {
+                return x.valor - y.valor;
+            }
+        });
 
-        for (int value: this.frequecia.values()) {
+        for (char value: this.frequecia.keySet()) {
             HuffmanNode no = new HuffmanNode();
 
-            no.valor = value;
+            no.caracter = value;
+            no.valor = this.frequecia.get(value);
+
 
             no.left = null;
             no.right = null;
 
             valores.add(no);
-
-
         }
         criarArvore();
     }
@@ -37,11 +46,11 @@ public class HuffmanTree {
 
         HuffmanNode novoNo = new HuffmanNode();
 
-        HuffmanNode left = valores.get(0);
-        valores.remove(0);
+        HuffmanNode left = valores.peek();
+        valores.poll();
 
-        HuffmanNode right = valores.get(0);
-        valores.remove(0);
+        HuffmanNode right = valores.peek();
+        valores.poll();
 
         novoNo.valor = left.valor + right.valor;
         novoNo.left = left;
