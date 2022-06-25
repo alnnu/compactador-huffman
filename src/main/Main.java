@@ -1,6 +1,6 @@
 package main;
 
-import huffman.Huffman;
+import huffman.HuffmanTree;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,8 +11,9 @@ public class Main {
        for(char c : test.toCharArray())
            frequncia[c] ++;
 
-        Huffman tree = new Huffman(frequncia);
+        HuffmanTree tree = new HuffmanTree(frequncia);
 
         tree.printFrequncia();
+
     }
 }
