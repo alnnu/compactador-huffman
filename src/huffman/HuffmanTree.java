@@ -1,6 +1,4 @@
 package huffman;
-
-import java.io.SequenceInputStream;
 import java.util.*;
 
 
@@ -25,11 +23,8 @@ public class HuffmanTree {
         criarArvore();
         compactar(root, "");
 
-        for (String code : codigo.keySet()) {
-            for (int i = codigo.get(code); i > 0; i--){
-                System.out.print(code);
-            }
-        }
+        //eLight, uma AI modelada com foco a eficiencia energetia
+
 
     }
 
@@ -71,8 +66,19 @@ public class HuffmanTree {
 
 
     public void printFrequncia() {
-        System.out.println("\nfrequncia: " + frequecia);
-        System.out.println("codigos: " + codigo);
+        String dado = "";
+
+        for (String code : codigo.keySet()) {
+            for (int i = codigo.get(code); i > 0; i--){
+                dado = dado + code;
+            }
+        }
+
+        System.out.println("total de bits: " + dado.length());
+        System.out.println("sequncia: " + dado);
+        System.out.println("\nfrequencia: " + frequecia);
+        System.out.println("codigo: " + codigo);
+
 
     }
 
