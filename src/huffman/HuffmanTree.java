@@ -1,13 +1,11 @@
 package huffman;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 
 public class HuffmanTree {
     private HashMap<Character,Integer> frequecia = new HashMap<Character, Integer>();
-    private PriorityQueue<HuffmanNode> valores;
+    private ArrayList<HuffmanNode> list = new ArrayList<HuffmanNode>();
     public HuffmanNode root = null;
 
     public HuffmanTree(int frequecia[])
@@ -15,58 +13,66 @@ public class HuffmanTree {
 
         for (int i = 0; i < 256; i++) {
             if(frequecia[i] > 0){
-                this.frequecia.put((char)i,frequecia[i]);
+                HuffmanNode no = new HuffmanNode(frequecia[i]);
+                this.frequecia.put((char) i, frequecia[i]);
+                list.add(no);
             }
         }
-        int size = this.frequecia.size();
-        valores = new PriorityQueue<HuffmanNode>(size, new Comparator<HuffmanNode>() {
-            @Override
-            public int compare(HuffmanNode x, HuffmanNode y) {
-                return x.valor - y.valor;
-            }
-        });
+        ordena();
 
-        for (char value: this.frequecia.keySet()) {
-            HuffmanNode no = new HuffmanNode();
-
-            no.caracter = value;
-            no.valor = this.frequecia.get(value);
-
-            no.left = null;
-            no.right = null;
-
-            valores.add(no);
-        }
         criarArvore();
+        compactar(root, "");
+
+    }
+
+    private void ordena() {
+        HuffmanNode aux1;
+        HuffmanNode aux2;
+        for (int i=0; i < list.size(); ++i){
+            for (int j=i; j < list.size(); ++j){
+                if (list.get(i).valor>list.get(j).valor){
+                    aux1 = list.get(i);
+                    aux2 = list.get(j);
+                    list.set(i, aux2);
+                    list.set(j, aux1);
+                }
+            }
+        }
     }
 
     private void criarArvore(){
-        int total = valores.size();
-        for (int i = 0; i < total && valores.size() > 1; i++) {
+        while (list.size() > 1) {
 
-            HuffmanNode novoNo = new HuffmanNode();
+            HuffmanNode novoNo = new HuffmanNode(0);
 
-            HuffmanNode right = valores.peek();
-            valores.poll();
+            HuffmanNode right = list.remove(0);
 
-            HuffmanNode left = valores.peek();
-            valores.poll();
+            HuffmanNode left = list.remove(0);
 
             novoNo.valor = left.valor + right.valor;
             novoNo.right = right;
             novoNo.left = left;
 
-            valores.add(novoNo);
+            list.add(novoNo);
+            ordena();
             //System.out.println(valores.size());
         }
-        root = valores.peek();
-        valores.poll();
-        System.out.println(valores.size());
+        root = list.remove(0);
+        //System.out.println(valores.size());
     }
 
 
     public void printFrequncia() {
-        System.out.println(frequecia);
+        System.out.println("\n" + frequecia);
     }
 
+    private void compactar(HuffmanNode root, String binario) {
+
+            if(root.left == null && root.right == null){
+                System.out.print(binario);
+            }else {
+                compactar(root.left, binario + 0);
+                compactar(root.right, binario + 1);
+            }
+    }
 }
