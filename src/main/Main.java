@@ -4,7 +4,7 @@ import huffman.HuffmanTree;
 
 public class Main {
     public static void main(String[] args) {
-       String test = "sandra de sa";
+       String test = "SANDRA DE SA";
 
        int frequncia[] = new int[256];
 

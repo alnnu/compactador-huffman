@@ -1,10 +1,12 @@
 package huffman;
 
+import java.io.SequenceInputStream;
 import java.util.*;
 
 
 public class HuffmanTree {
     private HashMap<Character,Integer> frequecia = new HashMap<Character, Integer>();
+    private HashMap<String, Integer> codigo = new HashMap<String, Integer>();
     private ArrayList<HuffmanNode> list = new ArrayList<HuffmanNode>();
     public HuffmanNode root = null;
 
@@ -22,6 +24,12 @@ public class HuffmanTree {
 
         criarArvore();
         compactar(root, "");
+
+        for (String code : codigo.keySet()) {
+            for (int i = codigo.get(code); i > 0; i--){
+                System.out.print(code);
+            }
+        }
 
     }
 
@@ -45,9 +53,9 @@ public class HuffmanTree {
 
             HuffmanNode novoNo = new HuffmanNode(0);
 
-            HuffmanNode right = list.remove(0);
-
             HuffmanNode left = list.remove(0);
+
+            HuffmanNode right = list.remove(0);
 
             novoNo.valor = left.valor + right.valor;
             novoNo.right = right;
@@ -63,13 +71,15 @@ public class HuffmanTree {
 
 
     public void printFrequncia() {
-        System.out.println("\n" + frequecia);
+        System.out.println("\nfrequncia: " + frequecia);
+        System.out.println("codigos: " + codigo);
+
     }
 
     private void compactar(HuffmanNode root, String binario) {
 
             if(root.left == null && root.right == null){
-                System.out.print(binario);
+                codigo.put(binario, root.valor);
             }else {
                 compactar(root.left, binario + 0);
                 compactar(root.right, binario + 1);
