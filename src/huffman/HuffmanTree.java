@@ -4,28 +4,36 @@ import java.util.*;
 
 public class HuffmanTree {
     private HashMap<Character,Integer> frequecia = new HashMap<Character, Integer>();
-    private HashMap<String, Integer> codigo = new HashMap<String, Integer>();
+    private HashMap<Character, String> codigo = new HashMap<Character, String>();
     private ArrayList<HuffmanNode> list = new ArrayList<HuffmanNode>();
     public HuffmanNode root = null;
+    public String texto;
 
-    public HuffmanTree(int frequecia[])
+    public HuffmanTree(String texto)
     {
-
-        for (int i = 0; i < 256; i++) {
-            if(frequecia[i] > 0){
-                HuffmanNode no = new HuffmanNode(frequecia[i]);
-                this.frequecia.put((char) i, frequecia[i]);
-                list.add(no);
-            }
-        }
+        this.texto = texto;
+        sequncia(texto);
         ordena();
 
         criarArvore();
         compactar(root, "");
 
-        //eLight, uma AI modelada com foco a eficiencia energetia
 
+    }
 
+    private void sequncia(String texto){
+        int caracteres[] = new int[256];
+
+        for(char c : texto.toCharArray())
+            caracteres[c] ++;
+
+        for (int i = 0; i < 256; i++) {
+            if(caracteres[i] > 0){
+                HuffmanNode no = new HuffmanNode(caracteres[i], (char)i);
+                this.frequecia.put((char) i, caracteres[i]);
+                list.add(no);
+            }
+        }
     }
 
     private void ordena() {
@@ -46,7 +54,7 @@ public class HuffmanTree {
     private void criarArvore(){
         while (list.size() > 1) {
 
-            HuffmanNode novoNo = new HuffmanNode(0);
+            HuffmanNode novoNo = new HuffmanNode(0,'"');
 
             HuffmanNode left = list.remove(0);
 
@@ -66,26 +74,59 @@ public class HuffmanTree {
 
 
     public void printFrequncia() {
-        String dado = "";
+//        for (String code : codigo.keySet()) {
+//            for (int i = codigo.get(code); i > 0; i--){
+//                dado = dado + code;
+//
+//            }
+//        }
 
-        for (String code : codigo.keySet()) {
-            for (int i = codigo.get(code); i > 0; i--){
-                dado = dado + code;
-            }
-        }
-
-        System.out.println("total de bits: " + dado.length());
-        System.out.println("sequncia: " + dado);
-        System.out.println("\nfrequencia: " + frequecia);
-        System.out.println("codigo: " + codigo);
+//        System.out.println("total de bits: " + dado.length());
+//        System.out.println("sequncia: " + dado);
+//        System.out.println("\nfrequencia: " + frequecia);
+//        System.out.println("codigo: " + codigo);
 
 
     }
 
+    public byte[] getBits()
+    {
+
+        //11100101
+       String bitTexto = "";
+       int bits = 0;
+       int i = 0;
+       int j = 0;
+       for (char c : texto.toCharArray())
+       {
+           bitTexto += codigo.get(c);
+       }
+
+        byte dado[] = new byte[bitTexto.length()/8];
+       System.out.println("Novo tamanho: "+ (bitTexto.length()/8));
+
+
+        for (char c : bitTexto.toCharArray())
+        {
+           if (i == 8)
+           {
+               dado[j] = (byte)bits;
+               bits = 0;
+               i=0;
+               j ++;
+           }
+            bits = (bits << 1) | (c - 48) ;
+            i++;
+        }
+
+        return dado;
+    }
+
+
     private void compactar(HuffmanNode root, String binario) {
 
             if(root.left == null && root.right == null){
-                codigo.put(binario, root.valor);
+                codigo.put(root.caracter, binario);
             }else {
                 compactar(root.left, binario + 0);
                 compactar(root.right, binario + 1);

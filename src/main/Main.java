@@ -1,6 +1,7 @@
 package main;
 
 import arquivo.Imput;
+import arquivo.Output;
 import huffman.HuffmanTree;
 
 public class Main {
@@ -10,17 +11,14 @@ public class Main {
 
         texto = file.imput();
 
-        int frequncia[] = new int[256];
 
-        for(char c : texto.toCharArray())
-            frequncia[c] ++;
-
-        HuffmanTree tree = new HuffmanTree(frequncia);
+        HuffmanTree tree = new HuffmanTree(texto);
 
         tree.printFrequncia();
 
+        Output output = new Output();
 
-
+        output.salvar(tree.getBits());
 
     }
 }

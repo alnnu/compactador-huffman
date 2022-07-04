@@ -24,8 +24,8 @@ public class Imput {
 
            byte[] textoB = Files.readAllBytes(file);
            String texto = new String(textoB);
-            System.out.println(texto);
-            System.out.println("Tamanho Original: " + textoB.length * 8);
+
+            System.out.println("Tamanho Original: " + textoB.length );
            return texto;
         }catch (Exception e){
             System.out.println(e);
